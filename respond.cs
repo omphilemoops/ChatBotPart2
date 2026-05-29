@@ -98,6 +98,9 @@ namespace ChatBotPart2
             add_answers.Add("sad I'm here for you.");
             add_answers.Add("angry Take a moment and let's solve the issue calmly.");
             add_answers.Add("confused Let me explain it more clearly.");
+            add_answers.Add("fraud contact your bank immediately if fraud is detected.");
+            add_answers.Add("fraud report suspicious financial activity to the authorities.");
+            add_answers.Add("fraud monitor your accounts for unusual activity.");
         }
     }
 }
