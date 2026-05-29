@@ -101,6 +101,10 @@ namespace ChatBotPart2
             add_answers.Add("fraud contact your bank immediately if fraud is detected.");
             add_answers.Add("fraud report suspicious financial activity to the authorities.");
             add_answers.Add("fraud monitor your accounts for unusual activity.");
+
+            add_answers.Add("angry i understand you're angry. let's try solve the issue together.");
+            add_answers.Add("angry it's okay to feel angry, but i'll help you fix the problem.");
+            add_answers.Add("angry take your time, i'm here to help you sort it out.");
         }
     }
 }
