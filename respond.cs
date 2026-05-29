@@ -41,6 +41,9 @@ namespace ChatBotPart2
             add_answers.Add("password Use strong passwords with symbols and numbers.");
             add_answers.Add("password Avoid using your birth date as a password.");
             add_answers.Add("password Change your passwords regularly.");
+            add_answers.Add("password a password is used to secure access to your accounts or devices.");
+            add_answers.Add("password it should be strong, long and not easy to guess.");
+            add_answers.Add("password avoid using personal details when creating one.");
 
             // PHISHING
             add_answers.Add("phishing Never click suspicious email links.");
