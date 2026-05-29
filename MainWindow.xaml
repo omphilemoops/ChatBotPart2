@@ -1,0 +1,166 @@
+﻿
+
+<Window x:Class="ChatBotPart2.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Cybersecurity Chatbot"
+        Height="500"
+        Width="850"
+        Background="#101820">
+
+    <Grid>
+
+        <!-- HOME GRID -->
+        <Grid x:Name="home_grid">
+
+            <!-- LOGO -->
+            <Image Source="/Logo.jpg"
+                   Height="220"
+                   Width="320"
+                   Margin="0,0,0,200"/>
+
+            <!-- TITLE -->
+            <TextBlock
+                Text="Welcome To Cybersecurity Awareness Bot"
+                Foreground="White"
+                FontSize="24"
+                FontWeight="Bold"
+                HorizontalAlignment="Center"
+                Margin="0,290,0,0"/>
+
+            <!-- PROCEED BUTTON -->
+            <Button
+                Content="Proceed"
+                Height="50"
+                Width="250"
+                Margin="0,360,0,0"
+                Background="#00FFFF"
+                Foreground="Black"
+                FontSize="18"
+                FontWeight="Bold"
+                Click="proceed"/>
+        </Grid>
+
+        <!-- USERNAME GRID -->
+        <Image Source="/Logo.jpg"
+        Height="220"
+        Width="320"
+        Margin="0,0,0,200"/>
+        
+        <Grid x:Name="username_grid"
+              Visibility="Hidden">
+
+            <!-- TITLE -->
+            <TextBlock
+                Text="Enter Username"
+                Foreground="White"
+                FontSize="24"
+                FontWeight="Bold"
+                HorizontalAlignment="Center"
+                Margin="0,240,0,0"/>
+
+            <!-- USERNAME INPUT -->
+            <TextBox
+                x:Name="usernames_input"
+                Height="45"
+                Width="300"
+                Margin="0,160,0,0"
+                FontSize="18"
+                TextAlignment="Center"/>
+
+            <!-- LOGIN ERROR -->
+            <TextBlock
+                x:Name="username_error"
+                Foreground="Red"
+                FontSize="14"
+                FontWeight="Bold"
+                HorizontalAlignment="Center"
+                Margin="0,220,0,0"/>
+
+            <!-- SUBMIT BUTTON -->
+            <Button
+                Content="Submit"
+                Height="45"
+                Width="300"
+                Margin="0,280,0,0"
+                Background="#00FFFF"
+                Foreground="Black"
+                FontWeight="Bold"
+                FontSize="16"
+                Click="submit_name"/>
+        </Grid>
+
+        <!-- CHAT GRID -->
+        <Grid x:Name="chat_grid"
+              Visibility="Hidden">
+
+            <!-- STATUS -->
+            <Border
+                Background="#1A1A1A"
+                BorderBrush="#00FFFF"
+                BorderThickness="1"
+                Height="40"
+                Margin="10,10,10,0"
+                VerticalAlignment="Top">
+
+                <TextBlock
+                    x:Name="status_text"
+                    Text="Status: Online"
+                    Foreground="#00FFFF"
+                    FontSize="14"
+                    VerticalAlignment="Center"
+                    Margin="10,0,0,0"/>
+            </Border>
+
+            <!-- CHAT AREA -->
+            <ListView
+                x:Name="chats"
+                Margin="10,60,10,100"
+                Background="#1A1A1A"
+                Foreground="White"
+                BorderBrush="#00FFFF"
+                BorderThickness="1"/>
+
+            <!-- QUESTION INPUT -->
+            <TextBox
+                x:Name="question"
+                Height="50"
+                Margin="10,0,320,20"
+                VerticalAlignment="Bottom"
+                FontSize="16"
+                Background="#1A1A1A"
+                Foreground="White"
+                BorderBrush="#00FFFF"/>
+
+            <!-- SEND BUTTON -->
+            <Button
+                Content="Send"
+                Height="50"
+                Width="140"
+                Margin="0,0,160,20"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Bottom"
+                Background="#00FFFF"
+                Foreground="Black"
+                FontWeight="Bold"
+                FontSize="16"
+                Click="send"/>
+
+            <!-- CLEAR CHAT BUTTON -->
+            <Button
+                Content="Clear Chat"
+                Height="50"
+                Width="140"
+                Margin="0,0,10,20"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Bottom"
+                Background="Red"
+                Foreground="White"
+                FontWeight="Bold"
+                FontSize="16"
+                Click="clear_chat"/>
+
+        </Grid>
+
+    </Grid>
+</Window>
