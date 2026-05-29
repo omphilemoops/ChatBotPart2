@@ -46,6 +46,9 @@ namespace ChatBotPart2
             add_answers.Add("phishing Never click suspicious email links.");
             add_answers.Add("phishing Scammers pretend to be trusted companies.");
             add_answers.Add("phishing Verify email addresses carefully.");
+            add_answers.Add("phishing phishing is a scam where attackers pretend to be trusted sources to steal information.");
+            add_answers.Add("phishing it uses fake messages or websites to trick users into revealing sensitive data.");
+            add_answers.Add("phishing attackers use deception to make users believe they are legitimate.");
 
             // FIREWALL
             add_answers.Add("firewall A firewall blocks harmful network traffic.");
