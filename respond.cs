@@ -63,6 +63,9 @@ namespace ChatBotPart2
             // VPN
             add_answers.Add("vpn VPNs protect your privacy online.");
             add_answers.Add("vpn VPNs encrypt your internet traffic.");
+            add_answers.Add("vpn a vpn helps protect your privacy on public wi-fi.");
+            add_answers.Add("vpn it encrypts your internet traffic for safety.");
+            add_answers.Add("vpn it improves security when using public networks.");
 
             // MALWARE
             add_answers.Add("malware Malware can damage your computer.");
