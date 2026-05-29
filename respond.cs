@@ -53,6 +53,9 @@ namespace ChatBotPart2
             // FIREWALL
             add_answers.Add("firewall A firewall blocks harmful network traffic.");
             add_answers.Add("firewall Firewalls protect your computer from attackers.");
+            add_answers.Add("firewall a firewall controls network traffic based on security rules.");
+            add_answers.Add("firewall it helps block unwanted access to your device or network.");
+            add_answers.Add("firewall it acts as a protective barrier between trusted and untrusted networks.");
 
             // VPN
             add_answers.Add("vpn VPNs protect your privacy online.");
