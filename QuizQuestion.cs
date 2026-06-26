@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace ChatBotPart2
 {
+    // Class representing a quiz question
     public class QuizQuestion
     {
         public string Question { get; set; }
