@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace ChatBotPart2
 {
+    // Class representing a task in the CyberTask application
     public class CyberTask
     {
         public int Id { get; set; }
