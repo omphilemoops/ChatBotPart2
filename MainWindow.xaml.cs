@@ -25,6 +25,20 @@ namespace ChatBotPart2
         string username = string.Empty;
         string currentStatus = "Online";
         string last_topic = string.Empty;
+        // PART 3 OBJECTS
+        DatabaseManager database =
+            new DatabaseManager();
+
+        ActivityLogger logger =
+            new ActivityLogger();
+
+        QuizManager quiz =
+            new QuizManager();
+
+        private QuizQuestion currentQuestion;
+        private bool waitingForReminder = false;
+
+        private CyberTask pendingTask = null;
 
         DateTime lastMessageDate;
 
@@ -43,6 +57,11 @@ namespace ChatBotPart2
                 new voice_greeting();
 
             greet.greet();
+            RefreshTaskGrid();
+
+            LoadQuestion();
+
+            logger.Add("Application Started");
         }
 
         // =====================================
@@ -181,28 +200,151 @@ namespace ChatBotPart2
             {
                 error_method(
                     "ChatBot",
-                    "Please enter a valid question."
-                );
-
-                return;
-            }
-
-            questions =
-                questions.ToLower();
-
-            // FOLLOW-UP QUESTIONS
-            if (questions.Contains("tell me more") ||
-                questions.Contains("more") ||
-                questions.Contains("explain"))
-            {
-                if (!string.IsNullOrWhiteSpace(last_topic))
+                    "Please enter a valid question.");
+// ADD TASK USING NATURAL LANGUAGE
+if (questions.StartsWith("add task"))
                 {
-                    ai_check(last_topic);
+                    string title = questions.Replace("add task", "")
+                                            .Replace("-", "")
+                                            .Trim();
+
+                    if (string.IsNullOrWhiteSpace(title))
+                    {
+                        error_method("ChatBot",
+                            "Please tell me the task name.");
+
+                        return;
+                    }
+
+                    pendingTask = new CyberTask()
+                    {
+                        Title = title,
+                        Description = "Review account privacy settings to ensure your data is protected.",
+                        ReminderDate = DateTime.Now,
+                        Completed = false
+                    };
+
+                    waitingForReminder = true;
+
+                    error_method("ChatBot",
+                        "Task added with the description \"" +
+                        pendingTask.Description +
+                        "\"\n\nWould you like a reminder?");
                     return;
                 }
-            }
 
-            string[] words =
+
+                questions =
+                    questions.ToLower();
+
+                // FOLLOW-UP QUESTIONS
+                if (questions.Contains("tell me more") ||
+                    questions.Contains("more") ||
+                    questions.Contains("explain"))
+                {
+                    if (!string.IsNullOrWhiteSpace(last_topic))
+                    {
+                        ai_check(last_topic);
+                        return;
+                    }
+                }
+                if (questions.Contains(
+        "add task"))
+                {
+                    error_method(
+                        "ChatBot",
+                        "Please use the Task Assistant tab."
+                    );
+
+                    logger.Add(
+                        "NLP Task Request"
+                    );
+
+                    return;
+                }
+
+                if (questions.Contains(
+                    "show tasks"))
+                {
+                    error_method(
+                        "ChatBot",
+                        "Open the Task Assistant tab to view tasks."
+                    );
+
+                    logger.Add(
+                        "NLP View Tasks"
+                    );
+
+                    return;
+                }
+
+                if (questions.Contains(
+                    "quiz"))
+                {
+                    error_method(
+                        "ChatBot",
+                        "Open the Quiz tab."
+                    );
+
+                    logger.Add(
+                        "NLP Quiz Request"
+                    );
+
+                    return;
+                }
+
+                if (questions.Contains(
+                    "activity"))
+                {
+                    error_method(
+                        "ChatBot",
+                        "Open the Activity Log tab."
+                    );
+
+                    logger.Add(
+                        "NLP Activity Log Request"
+                    );
+
+                    return;
+                }
+                if (waitingForReminder)
+                {
+                    waitingForReminder = false;
+
+                    if (questions.Contains("yes"))
+                    {
+                        int days = 1;
+
+                        Match match = Regex.Match(questions, @"\d+");
+
+                        if (match.Success)
+                            days = Convert.ToInt32(match.Value);
+
+                        pendingTask.ReminderDate =
+                            DateTime.Now.AddDays(days);
+
+                        database.AddTask(pendingTask);
+
+                        error_method("ChatBot",
+                            "Got it! I'll remind you in " +
+                            days +
+                            " day(s).");
+                    }
+                    else
+                    {
+                        database.AddTask(pendingTask);
+
+                        error_method("ChatBot",
+                            "Task saved without a reminder.");
+                    }
+
+                    RefreshTaskGrid();
+
+                    pendingTask = null;
+
+                    return;
+                } }
+                string[] words =
                 questions.Split(
                     new char[]
                     {
@@ -315,6 +457,7 @@ namespace ChatBotPart2
             question.Clear();
         }
 
+
         // =====================================
         // REMOVE SPECIAL CHARACTERS
         // =====================================
@@ -406,7 +549,271 @@ namespace ChatBotPart2
                 counting++;
             }
         }
+        private void RefreshTaskGrid()
+        {
+            try
+            {
+                taskGrid.ItemsSource = null;
+                taskGrid.ItemsSource =
+                    database.GetTasks();
+            }
+            catch
+            {
+            }
+        }
+        private void RefreshTasks_Click(
+    object sender,
+    RoutedEventArgs e)
+        {
+            RefreshTaskGrid();
 
+            logger.Add(
+                "Task List Viewed"
+            );
+        }
+        private void CompleteTask_Click(
+           object sender,
+           RoutedEventArgs e)
+        {
+            if (taskGrid.SelectedItem == null)
+            {
+                MessageBox.Show(
+                    "Please select a task first."
+                );
+
+                return;
+            }
+
+            CyberTask task =
+                (CyberTask)taskGrid.SelectedItem;
+
+            database.CompleteTask(task.Id);
+
+            logger.Add(
+                "Task Completed: " +
+                task.Title
+            );
+
+            RefreshTaskGrid();
+
+            MessageBox.Show(
+                "Task marked as completed."
+            );
+        }
+        private void DeleteTask_Click(
+       object sender,
+       RoutedEventArgs e)
+        {
+            if (taskGrid.SelectedItem == null)
+            {
+                MessageBox.Show(
+                    "Please select a task first."
+                );
+
+                return;
+            }
+
+            CyberTask task =
+                (CyberTask)taskGrid.SelectedItem;
+
+            MessageBoxResult result =
+                MessageBox.Show(
+                    "Delete '" + task.Title + "' ?",
+                    "Confirm Delete",
+                    MessageBoxButton.YesNo,
+                    MessageBoxImage.Question
+                );
+
+            if (result == MessageBoxResult.Yes)
+            {
+                database.DeleteTask(task.Id);
+
+                logger.Add(
+                    "Task Deleted: " +
+                    task.Title
+                );
+
+                RefreshTaskGrid();
+
+                MessageBox.Show(
+                    "Task deleted successfully."
+                );
+            }
+        }
+        private void LoadQuestion()
+        {
+            if (quiz.CurrentQuestion
+                >= quiz.Questions.Count)
+            {
+                quizQuestion.Text =
+                    "Quiz Complete";
+
+                btnA.Visibility =
+                    Visibility.Hidden;
+
+                btnB.Visibility =
+                    Visibility.Hidden;
+
+                btnC.Visibility =
+                    Visibility.Hidden;
+
+                btnD.Visibility =
+                    Visibility.Hidden;
+
+                MessageBox.Show(
+                    "Final Score: "
+                    + quiz.Score
+                    + "/"
+                    + quiz.Questions.Count
+                );
+
+                logger.Add(
+                    "Quiz Completed"
+                );
+
+                return;
+            }
+
+            currentQuestion =
+                quiz.Questions[
+                    quiz.CurrentQuestion
+                ];
+
+            quizQuestion.Text =
+                currentQuestion.Question;
+
+            btnA.Content =
+                "A. "
+                + currentQuestion.A;
+
+            btnB.Content =
+                "B. "
+                + currentQuestion.B;
+
+            btnC.Content =
+                "C. "
+                + currentQuestion.C;
+
+            btnD.Content =
+                "D. "
+                + currentQuestion.D;
+
+            quizScore.Text =
+                "Score: "
+                + quiz.Score;
+        }
+        private void CheckAnswer(string answer)
+        {
+            if (answer ==
+                currentQuestion.Correct)
+            {
+                quiz.Score++;
+
+                MessageBox.Show(
+                    "Correct!\n\n"
+                    + currentQuestion.Explanation
+                );
+            }
+            else
+            {
+                MessageBox.Show(
+                    "Incorrect.\n\n"
+                    + currentQuestion.Explanation
+                );
+            }
+
+            quiz.CurrentQuestion++;
+
+            logger.Add(
+                "Quiz Question Answered"
+            );
+
+            LoadQuestion();
+        }
+        private void AnswerA_Click( object sender,RoutedEventArgs e)
+        {
+            CheckAnswer("A");
+        }
+        private void AnswerB_Click( object sender,RoutedEventArgs e)
+        {
+            CheckAnswer("B");
+        }
+        private void AnswerC_Click(
+    object sender,
+    RoutedEventArgs e)
+        {
+            CheckAnswer("C");
+        }
+        private void AnswerD_Click(
+    object sender,
+    RoutedEventArgs e)
+        {
+            CheckAnswer("D");
+        }
+        private void RefreshLog_Click(
+    object sender,
+    RoutedEventArgs e)
+        {
+            activityList.ItemsSource =
+                null;
+
+            activityList.ItemsSource =
+                logger.GetRecent();
+        }
+
+        private void AddTask_Click(
+    object sender,
+    RoutedEventArgs e)
+        {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(
+                    taskTitle.Text))
+                {
+                    MessageBox.Show(
+                        "Enter task title."
+                    );
+
+                    return;
+                }
+
+                CyberTask task =
+                    new CyberTask
+                    {
+                        Title =
+                            taskTitle.Text,
+
+                        Description =
+                            taskDescription.Text,
+
+                        ReminderDate =
+                            taskDate.SelectedDate
+                            ?? DateTime.Now,
+
+                        Completed =
+                            false
+                    };
+
+                database.AddTask(task);
+
+                logger.Add(
+                    "Task Added: "
+                    + task.Title
+                );
+
+                RefreshTaskGrid();
+
+                MessageBox.Show(
+                    "Task added successfully."
+                );
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(
+                    ex.Message
+                );
+            }
+        }
         // =====================================
         // DISPLAY CHAT
         // =====================================
@@ -505,6 +912,7 @@ namespace ChatBotPart2
                     chats.Items.Count - 1
                 ]
             );
+
         }
     }
 }

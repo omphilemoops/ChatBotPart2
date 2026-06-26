@@ -15,7 +15,7 @@ namespace ChatBotPart2
             {
          //star of greet method
 
-            //replace the \bin\Debug\ from the path with greeting.wav
+            
 
             string auto_path = AppDomain.CurrentDomain.BaseDirectory.Replace(@"\bin\Debug\", @"\greeet.wav");
 

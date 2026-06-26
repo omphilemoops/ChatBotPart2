@@ -1,0 +1,8 @@
+﻿CREATE TABLE dbo.Tasks
+(
+    Id INT IDENTITY(1,1) PRIMARY KEY,
+    Title NVARCHAR(100) NOT NULL,
+    Description NVARCHAR(500),
+    ReminderDate DATETIME NOT NULL,
+    Completed BIT NOT NULL DEFAULT 0
+);

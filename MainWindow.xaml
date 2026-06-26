@@ -92,73 +92,246 @@
 
         <!-- CHAT GRID -->
         <Grid x:Name="chat_grid"
-              Visibility="Hidden">
+      Visibility="Hidden">
 
-            <!-- STATUS -->
-            <Border
-                Background="#1A1A1A"
-                BorderBrush="#00FFFF"
-                BorderThickness="1"
-                Height="40"
-                Margin="10,10,10,0"
-                VerticalAlignment="Top">
+            <TabControl Margin="10">
 
-                <TextBlock
-                    x:Name="status_text"
-                    Text="Status: Online"
-                    Foreground="#00FFFF"
-                    FontSize="14"
-                    VerticalAlignment="Center"
-                    Margin="10,0,0,0"/>
-            </Border>
+                <!-- ========================= -->
+                <!-- CHATBOT TAB -->
+                <!-- ========================= -->
 
-            <!-- CHAT AREA -->
-            <ListView
-                x:Name="chats"
-                Margin="10,60,10,100"
-                Background="#1A1A1A"
-                Foreground="White"
-                BorderBrush="#00FFFF"
-                BorderThickness="1"/>
+                <TabItem Header="Cyber Chatbot">
 
-            <!-- QUESTION INPUT -->
-            <TextBox
-                x:Name="question"
-                Height="50"
-                Margin="10,0,320,20"
-                VerticalAlignment="Bottom"
-                FontSize="16"
-                Background="#1A1A1A"
-                Foreground="White"
-                BorderBrush="#00FFFF"/>
+                    <Grid>
 
-            <!-- SEND BUTTON -->
-            <Button
-                Content="Send"
-                Height="50"
-                Width="140"
-                Margin="0,0,160,20"
-                HorizontalAlignment="Right"
-                VerticalAlignment="Bottom"
-                Background="#00FFFF"
-                Foreground="Black"
-                FontWeight="Bold"
-                FontSize="16"
-                Click="send"/>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="50"/>
+                            <RowDefinition/>
+                            <RowDefinition Height="70"/>
+                        </Grid.RowDefinitions>
 
-            <!-- CLEAR CHAT BUTTON -->
-            <Button
-                Content="Clear Chat"
-                Height="50"
-                Width="140"
-                Margin="0,0,10,20"
-                HorizontalAlignment="Right"
-                VerticalAlignment="Bottom"
-                Background="Red"
-                Foreground="White"
-                FontWeight="Bold"
-                FontSize="16"
-                Click="clear_chat"/>
+                        <Border
+                    Grid.Row="0"
+                    Background="#1A1A1A"
+                    BorderBrush="#00FFFF"
+                    BorderThickness="1">
+
+                            <TextBlock
+                        x:Name="status_text"
+                        Text="Status: Online"
+                        Foreground="#00FFFF"
+                        FontSize="14"
+                        VerticalAlignment="Center"
+                        Margin="10,0,0,0"/>
+                        </Border>
+
+                        <ListView
+                    x:Name="chats"
+                    Grid.Row="1"
+                    Margin="0,10,0,10"
+                    Background="#1A1A1A"
+                    Foreground="White"
+                    BorderBrush="#00FFFF"/>
+
+                        <Grid Grid.Row="2">
+
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="140"/>
+                                <ColumnDefinition Width="140"/>
+                            </Grid.ColumnDefinitions>
+
+                            <TextBox
+                        x:Name="question"
+                        Grid.Column="0"
+                        Margin="5"
+                        FontSize="16"
+                        Background="#1A1A1A"
+                        Foreground="White"/>
+
+                            <Button
+                        Grid.Column="1"
+                        Content="Send"
+                        Margin="5"
+                        Click="send"
+                        Background="#00FFFF"
+                        Foreground="Black"/>
+
+                            <Button
+                        Grid.Column="2"
+                        Content="Clear Chat"
+                        Margin="5"
+                        Click="clear_chat"
+                        Background="Red"
+                        Foreground="White"/>
+
+                        </Grid>
+
+                    </Grid>
+
+                </TabItem>
+
+                <!-- ========================= -->
+                <!-- TASK TAB -->
+                <!-- ========================= -->
+
+                <TabItem Header="Task Assistant">
+
+                    <Grid Margin="10">
+
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="50"/>
+                            <RowDefinition Height="50"/>
+                            <RowDefinition Height="50"/>
+                            <RowDefinition Height="60"/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+
+                        <TextBox
+                    x:Name="taskTitle"
+                            Text="Name"
+                    Grid.Row="0"
+                    Margin="5"
+                    FontSize="16"
+                    />
+
+                        <TextBox
+                    x:Name="taskDescription"
+                            Text="Description"
+                    Grid.Row="1"
+                    Margin="5"
+                    FontSize="16"
+                    />
+
+                        <DatePicker
+                    x:Name="taskDate"
+                    Grid.Row="2"
+                    Margin="5"/>
+
+                        <StackPanel
+                    Grid.Row="3"
+                    Orientation="Horizontal">
+
+                            <Button
+                        Content="Add Task"
+                        Width="120"
+                        Margin="5"
+                        Click="AddTask_Click"/>
+
+                            <Button
+                        Content="Complete Task"
+                        Width="120"
+                        Margin="5"
+                        Click="CompleteTask_Click"/>
+
+                            <Button
+                        Content="Delete Task"
+                        Width="120"
+                        Margin="5"
+                        Click="DeleteTask_Click"/>
+
+                            <Button
+                        Content="Refresh"
+                        Width="120"
+                        Margin="5"
+                        Click="RefreshTasks_Click"/>
+
+                        </StackPanel>
+
+                        <DataGrid
+                    x:Name="taskGrid"
+                    Grid.Row="4"
+                    Margin="5"
+                    AutoGenerateColumns="True"/>
+
+                    </Grid>
+
+                </TabItem>
+
+                <!-- ========================= -->
+                <!-- QUIZ TAB -->
+                <!-- ========================= -->
+
+                <TabItem Header="Cyber Quiz">
+
+                    <Grid Margin="10">
+
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="100"/>
+                            <RowDefinition Height="60"/>
+                            <RowDefinition Height="60"/>
+                            <RowDefinition Height="60"/>
+                            <RowDefinition Height="60"/>
+                            <RowDefinition Height="50"/>
+                        </Grid.RowDefinitions>
+
+                        <TextBlock
+                    x:Name="quizQuestion"
+                    Grid.Row="0"
+                    TextWrapping="Wrap"
+                    FontSize="18"
+                    FontWeight="Bold"/>
+
+                        <Button
+                    x:Name="btnA"
+                    Grid.Row="1"
+                    Click="AnswerA_Click"/>
+
+                        <Button
+                    x:Name="btnB"
+                    Grid.Row="2"
+                    Click="AnswerB_Click"/>
+
+                        <Button
+                    x:Name="btnC"
+                    Grid.Row="3"
+                    Click="AnswerC_Click"/>
+
+                        <Button
+                    x:Name="btnD"
+                    Grid.Row="4"
+                    Click="AnswerD_Click"/>
+
+                        <TextBlock
+                    x:Name="quizScore"
+                    Grid.Row="5"
+                    FontSize="18"
+                    FontWeight="Bold"
+                    Text="Score: 0"/>
+
+                    </Grid>
+
+                </TabItem>
+
+                <!-- ========================= -->
+                <!-- ACTIVITY LOG TAB -->
+                <!-- ========================= -->
+
+                <TabItem Header="Activity Log">
+
+                    <Grid Margin="10">
+
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition Height="60"/>
+                        </Grid.RowDefinitions>
+
+                        <ListBox
+                    x:Name="activityList"
+                    Grid.Row="0"/>
+
+                        <Button
+                    Grid.Row="1"
+                    Content="Refresh Activity Log"
+                    Click="RefreshLog_Click"
+                    Width="200"
+                    HorizontalAlignment="Left"/>
+
+                    </Grid>
+
+                </TabItem>
+
+            </TabControl>
 
         </Grid>
 
