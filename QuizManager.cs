@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace ChatBotPart2
 {
+    // Class to manage the quiz questions and scoring
     public class QuizManager
     {
         public List<QuizQuestion> Questions =
