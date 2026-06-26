@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 
 namespace ChatBotPart2
 {
+    //database manager class to handle database operations
     public class DatabaseManager
     {
         private string connectionString =
